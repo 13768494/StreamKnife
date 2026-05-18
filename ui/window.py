@@ -14,7 +14,7 @@ class MainWindow(QWidget):
 
         self.dispatcher = dispatcher
 
-        self.setWindowTitle("数据处理工具 - 插件面板")
+        self.setWindowTitle("StreamKnife by 帅成马")
 
         # ===== 参数框 =====
         self.param_box = QVBoxLayout()
