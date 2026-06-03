@@ -2,11 +2,10 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout,
     QTextEdit, QPushButton, QListWidget,
     QLabel, QLineEdit,QRadioButton, QButtonGroup,
-    QCheckBox
+    QCheckBox, QFileDialog
 )
-
 from utils.file_io import save_text
-
+from datetime import datetime
 
 class MainWindow(QWidget):
     def __init__(self, dispatcher):
@@ -203,4 +202,23 @@ class MainWindow(QWidget):
 
     # 保存
     def save(self):
-        save_text("result.txt", self.output_box.toPlainText())
+        content = self.output_box.toPlainText()
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        default_name = f"result_{timestamp}.txt"
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "保存结果",
+            default_name,
+            "文本文件 (*.txt);;"
+            "HTML文件 (*.html);;"
+            "CSV文件 (*.csv);;"
+            "JSON文件 (*.json);;"
+            "日志文件 (*.log);;"
+            "所有文件 (*.*)"
+        )
+
+        if not file_path:
+            return
+
+        save_text(file_path, content)
