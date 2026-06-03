@@ -1,5 +1,7 @@
 import sys
+
 from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QIcon
 
 from ui.window import MainWindow
 from core.dispatcher import Dispatcher
@@ -9,7 +11,10 @@ from core.registry import load_plugins, FUNCTIONS
 def main():
     app = QApplication(sys.argv)
 
-    # ⭐加载插件
+    # 设置程序图标
+    app.setWindowIcon(QIcon("assets/app.ico"))
+
+    # 加载插件
     load_plugins()
 
     dispatcher = Dispatcher()

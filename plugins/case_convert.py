@@ -8,16 +8,16 @@ META = {
             "name": "mode",
             "type": "radio",
             "label": "转换模式",
-            "options": ["upper", "lower"]
+            "options": ["转大写", "转小写"]
         }
     ]
 }
 
 
 def run(data: str, config: dict) -> str:
-    mode = config.get("mode", "upper")
+    mode = config.get("mode", "转大写")
 
-    if mode == "upper":
+    if mode == "转大写":
         return data.upper()
     else:
         return data.lower()

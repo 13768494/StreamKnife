@@ -1,8 +1,8 @@
 import json
 
-NAME = "JSON层级展开"
+NAME = "json 层级格式去除"
 CATEGORY = "JSON"
-DESC = "将JSON格式化为层级键值行展示"
+DESC = "将 json 格式化为层级键值行展示，可快速转为赋值语句"
 
 META = {
     "params": [

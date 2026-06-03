@@ -370,43 +370,7 @@ main.spec
 
 ---
 
-## 5、修改 `main.spec`（关键步骤）
-
-打开 `main.spec`，找到 `Analysis` 部分，修改为：
-
-```python
-a = Analysis(
-    ['main.py'],
-    pathex=[],
-    binaries=[],
-    datas=[
-        ('plugins', 'plugins'),
-        ('config', 'config'),
-        ('assets', 'assets')
-    ],
-    hiddenimports=[
-        'PySide6.QtCore',
-        'PySide6.QtGui',
-        'PySide6.QtWidgets'
-    ],
-    hookspath=[],
-    hooksconfig={},
-    runtime_hooks=[],
-    excludes=[],
-    noarchive=False,
-)
-```
-
-###### 解释
-
-| 项            | 作用                      |
-| ------------- | ------------------------- |
-| datas         | 把插件目录一并打包进去    |
-| hiddenimports | 解决 PySide6 打包缺失问题 |
-
----
-
-## 6、正式打包
+## 5、正式打包（第一次打包）
 
 ```bash
 pyinstaller main.py --hidden-import=json --hidden-import=importlib --hidden-import=plugins --collect-submodules=plugins --add-data "plugins;plugins"
@@ -415,18 +379,18 @@ pyinstaller main.py --hidden-import=json --hidden-import=importlib --hidden-impo
 完成后生成：
 
 ```
-dist/main.exe
+StreamKnife\dist\main\main.exe
 ```
 
 ---
 
-## 7、测试 exe
+## 6、测试 exe
 
 双击 `dist/main.exe`，应可直接运行，插件仍然可以被动态加载。
 
 ---
 
-## 8、后期每次更新打包
+## 7、后期每次更新打包
 
 以后只需要执行：
 
@@ -434,9 +398,46 @@ dist/main.exe
 pyinstaller main.spec
 ```
 
-无需再写参数。
+如需要自定义图标、程序名等内容，则需要修改`main.spec`
 
-> 不想打包直接命令行调用python运行main.py也可以使用，现阶段运行.exe会有黑窗口
+```python
+exe = EXE(
+    pyz,
+    a.scripts,
+    a.binaries,
+    a.datas,
+    [],
+    name='StreamKnife',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    console=False,
+
+    icon='assets/app.ico'
+)
+
+```
+
+删除
+
+```
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='main',
+)
+```
+
+
+
+> 不想打包直接命令行调用python运行main.py也可以使用，按照上方内容修改main.spec，可去除程序运行时的黑框。
+>
+> 如打包出来的程序运行时左上角图标依旧是默认图标，则将打包后的程序放在与assets同级目录下。
 
 ----
 
